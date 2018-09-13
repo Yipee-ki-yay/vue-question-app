@@ -1,60 +1,73 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div class="wrapper">
+
+    <h2>{{ this.info[0].title }}</h2>
+    <hr>
+    <div>
+      <!-- <label>
+        <input :type="info[0].type" name="" >
+        {{ answer }}
+      </label> -->
+      <app-input v-for="(answer, index) in info[0].answers"
+                 :answer="answer"
+                 :type="info[0].type"    
+                 :picked="picked"    
+                 @pickedradio="changePicked(index, $event)"
+      ></app-input>
+    </div>
+    <hr>
+    
+    <button class="btn btn-primary">Next</button>
+
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+  import AppInput from './components/Input';
+
+  export default {
+    data() {
+      return {
+        info: [
+          {
+            type: 'radio',
+            title: 'Какой тег задаёт ссылку?',
+            answers: [
+              'a',
+              'div',
+              'span',
+              'img'
+            ]
+          },
+          {
+            type: 'checkbox',
+            title: 'Какие из  этих тегов строчные?',
+            answers: [
+              'a',
+              'div',
+              'span',
+              'img'
+            ]
+          }
+        ],
+        picked: ''        
+      }
+    },
+    methods: {
+      changePicked(index, data) {
+        this.picked = data.isPicked;
+      }
+    },
+    components: {
+      AppInput
     }
   }
-}
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
+<style scoped>
+  .wrapper {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;  
+  }
 </style>

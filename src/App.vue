@@ -4,20 +4,31 @@
     <h2>{{ this.info[0].title }}</h2>
     <hr>
     <div>
-      <!-- <label>
-        <input :type="info[0].type" name="" >
-        {{ answer }}
-      </label> -->
       <app-input v-for="(answer, index) in info[0].answers"
+                 v-bind:key="index"
                  :answer="answer"
-                 :type="info[0].type"    
-                 :picked="picked"    
+                 :index="index"
+                 :type="info[0].type"
+                 :picked="picked"
                  @pickedradio="changePicked(index, $event)"
       ></app-input>
     </div>
     <hr>
     
     <button class="btn btn-primary">Next</button>
+
+    <h2>Итого</h2>
+    <hr>
+    <table class="table table-bordered">
+      <tr>
+        <td>Вопрос</td>
+        <td>Ваш ответ</td>
+      </tr>
+      <tr>
+        <td>{{ this.info[0].title }}</td>
+        <td>{{ this.results[0].radioNum }}</td>
+      </tr>
+    </table>
 
   </div>
 </template>
@@ -50,12 +61,19 @@
             ]
           }
         ],
+        results: [
+          {
+            radioNum: '',
+            checkboxNum: []
+          }
+        ],
         picked: ''        
       }
     },
     methods: {
       changePicked(index, data) {
         this.picked = data.isPicked;
+        this.results[0].radioNum = data.num;
       }
     },
     components: {

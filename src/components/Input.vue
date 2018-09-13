@@ -1,17 +1,19 @@
 <template>
-    <label>
-        <input :type="type" 
-               :value="answer"
-               v-model="picked"
-               @input="onPicked"
-               >
-        {{ answer }}
-    </label>
+    <div>
+        <label>
+            <input :type="type" 
+                :value="answer"
+                v-model="picked"
+                @input="onPicked"
+                >
+            {{ answer }}
+        </label>
+    </div>
 </template>
 
 <script>
     export default {
-        props: ['answer', 'type', 'picked'],
+        props: ['answer', 'type', 'picked', 'index'],
         data() {
             return {
 
@@ -20,7 +22,8 @@
         methods: {
             onPicked(e) {
                 this.$emit('pickedradio', {
-                    isPicked: e.target.value 
+                    isPicked: e.target.value,
+                    num: this.index            
                 })
             }
         }

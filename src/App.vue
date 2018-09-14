@@ -13,9 +13,24 @@
                  @pickedradio="changePicked(index, $event)"
       ></app-input>
     </div>
-    <hr>
-    
+    <hr>    
     <button class="btn btn-primary">Next</button>
+
+    <h2>{{ this.info[1].title }}</h2>
+    <hr>
+    <div>
+      <checkbox-input v-for="(answer, index) in info[1].answers"
+                      v-bind:key="index"
+                      :answer="answer"
+                      :index="index"
+                      :type="info[1].type"
+                      @pickedbox="setCheckedRes(index)"
+      >        
+      </checkbox-input>
+    </div>
+    <hr>
+    <button class="btn btn-primary">Next</button>
+
 
     <h2>Итого</h2>
     <hr>
@@ -28,6 +43,10 @@
         <td>{{ this.info[0].title }}</td>
         <td>{{ this.results[0].radioNum }}</td>
       </tr>
+      <tr>
+        <td>{{ this.info[1].title }}</td>
+        <td>{{ this.results[0].checkboxNum }}</td>
+      </tr>   
     </table>
 
   </div>
@@ -35,6 +54,7 @@
 
 <script>
   import AppInput from './components/Input';
+  import CheckboxInput from './components/Checkbox';
 
   export default {
     data() {
@@ -74,10 +94,20 @@
       changePicked(index, data) {
         this.picked = data.isPicked;
         this.results[0].radioNum = data.num;
+      },
+      setCheckedRes(index) {
+        this.results[0].checkboxNum[index] = true;
+        console.log(this.results[0].checkboxNum);
+      }
+    },
+    beforeMount() {
+      for(let i = 0; i < this.info[1].answers.length; i++) {
+        this.results[0].checkboxNum.push(false);
       }
     },
     components: {
-      AppInput
+      AppInput,
+      CheckboxInput
     }
   }
 </script>

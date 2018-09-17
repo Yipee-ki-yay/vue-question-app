@@ -12,10 +12,15 @@
 
 <script>
     export default {
-        props: ['answer', 'index', 'type'],
+        // props: ['answer', 'index', 'type'],
+        props: {
+            answer: String,
+            type: String,
+            index: [Number, String]
+        },
         methods: {
-            onPicked(e) {
-                this.$emit('pickedbox');
+            onPicked($event) {
+                this.$emit('pickedbox', $event);
             }
         }
     }

@@ -13,7 +13,13 @@
 
 <script>
     export default {
-        props: ['answer', 'type', 'picked', 'index'],
+        // props: ['answer', 'type', 'picked', 'index'],
+        props: {
+            answer: String,
+            type: String,
+            picked: String,
+            index: [Number, String]
+        },
         data() {
             return {
 

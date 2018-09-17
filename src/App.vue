@@ -1,9 +1,10 @@
 <template>
   <div class="wrapper">
 
-    <h2>{{ this.info[0].title }}</h2>
-    <hr>
     <div>
+      <h2>{{ this.info[0].title }}</h2>
+      <hr>
+      <div>
       <app-input v-for="(answer, index) in info[0].answers"
                  v-bind:key="index"
                  :answer="answer"
@@ -12,25 +13,27 @@
                  :picked="picked"
                  @pickedradio="changePicked(index, $event)"
       ></app-input>
+      </div>
+      <hr>    
+      <button class="btn btn-primary" @click="show = !show">Next</button>
     </div>
-    <hr>    
-    <button class="btn btn-primary">Next</button>
 
-    <h2>{{ this.info[1].title }}</h2>
-    <hr>
     <div>
-      <checkbox-input v-for="(answer, index) in info[1].answers"
-                      v-bind:key="index"
-                      :answer="answer"
-                      :index="index"
-                      :type="info[1].type"
-                      @pickedbox="setCheckedRes(index)"
-      >        
-      </checkbox-input>
+      <h2>{{ this.info[1].title }}</h2>
+      <hr>
+      <div>
+        <checkbox-input v-for="(answer, index) in info[1].answers"
+                        v-bind:key="index"
+                        :answer="answer"
+                        :index="index"
+                        :type="info[1].type"
+                        @pickedbox="setCheckedRes($event, index)"
+        >        
+        </checkbox-input>
+      </div>
+      <hr>
+      <button class="btn btn-primary" @click="show = !show">Next</button>
     </div>
-    <hr>
-    <button class="btn btn-primary">Next</button>
-
 
     <h2>Итого</h2>
     <hr>
@@ -87,7 +90,8 @@
             checkboxNum: []
           }
         ],
-        picked: ''        
+        picked: '',
+        show: true        
       }
     },
     methods: {
@@ -95,14 +99,17 @@
         this.picked = data.isPicked;
         this.results[0].radioNum = data.num;
       },
-      setCheckedRes(index) {
-        this.results[0].checkboxNum[index] = true;
+      setCheckedRes($event, index) {
+        this.results[0].checkboxNum[index] = $event.target.checked;
+        console.log($event.target.checked);
         console.log(this.results[0].checkboxNum);
       }
     },
     beforeMount() {
       for(let i = 0; i < this.info[1].answers.length; i++) {
-        this.results[0].checkboxNum.push(false);
+        // this.results[0].checkboxNum.push(false);
+        this.results[0].checkboxNum[i] = false;
+        console.log('bm');
       }
     },
     components: {

@@ -2,10 +2,10 @@
     <div>
         <label>
             <input :type="type" 
-                :value="answer"
-                v-model="picked"
-                @input="onPicked"
-                >
+                   :value="answer"
+                   v-model="picked"
+                   @input="onPicked"
+                   >
             {{ answer }}
         </label>
     </div>
@@ -13,7 +13,6 @@
 
 <script>
     export default {
-        // props: ['answer', 'type', 'picked', 'index'],
         props: {
             answer: String,
             type: String,

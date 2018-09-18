@@ -12,7 +12,6 @@
 
 <script>
     export default {
-        // props: ['answer', 'index', 'type'],
         props: {
             answer: String,
             type: String,
@@ -20,7 +19,9 @@
         },
         methods: {
             onPicked($event) {
-                this.$emit('pickedbox', $event);
+                this.$emit('pickedbox', {
+                    isCheck: $event.target.checked
+                });
             }
         }
     }

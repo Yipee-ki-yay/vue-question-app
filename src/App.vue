@@ -1,63 +1,36 @@
 <template>
   <div class="wrapper">
 
-    <div>
-      <h2>{{ this.info[0].title }}</h2>
-      <hr>
-      <div>
-      <app-input v-for="(answer, index) in info[0].answers"
-                 v-bind:key="index"
-                 :answer="answer"
-                 :index="index"
-                 :type="info[0].type"
-                 :picked="picked"
-                 @pickedradio="changePicked(index, $event)"
-      ></app-input>
-      </div>
-      <hr>    
-      <button class="btn btn-primary" @click="show = !show">Next</button>
-    </div>
+    <radio-wrapper v-if="!firstShow"
+                   :title="info[0].title"
+                   :obj="info[0]"
+                   :picked="picked"
+                   @pickedpickedradio="changePicked(index, $event)"
+                   @showshow="isFirstShow()"
+    ></radio-wrapper>
 
-    <div>
-      <h2>{{ this.info[1].title }}</h2>
-      <hr>
-      <div>
-        <checkbox-input v-for="(answer, index) in info[1].answers"
-                        v-bind:key="index"
-                        :answer="answer"
-                        :index="index"
-                        :type="info[1].type"
-                        @pickedbox="setCheckedRes($event, index)"
-        >        
-        </checkbox-input>
-      </div>
-      <hr>
-      <button class="btn btn-primary" @click="show = !show">Next</button>
-    </div>
+    <checkbox-wrapper v-if="firstShow && !secondShow"
+                      :title="info[1].title"
+                      :obj="info[1]"
+                      :isCheckbox="isCheckboxed"
+                      @pickedpickedbox="setCheckedRes($event)"
+                      @showshow="isSecondShow()"
+    ></checkbox-wrapper>    
 
-    <h2>Итого</h2>
-    <hr>
-    <table class="table table-bordered">
-      <tr>
-        <td>Вопрос</td>
-        <td>Ваш ответ</td>
-      </tr>
-      <tr>
-        <td>{{ this.info[0].title }}</td>
-        <td>{{ this.results[0].radioNum }}</td>
-      </tr>
-      <tr>
-        <td>{{ this.info[1].title }}</td>
-        <td>{{ this.results[0].checkboxNum }}</td>
-      </tr>   
-    </table>
+    <app-final v-if="firstShow && secondShow"
+               :firstTitle="info[0].title"
+               :secondTitle="info[1].title"
+               :radioResult="results[0].radioNum"
+               :checkboxArr="checkboxNum"
+    ></app-final>
 
   </div>
 </template>
 
 <script>
-  import AppInput from './components/Input';
-  import CheckboxInput from './components/Checkbox';
+  import RadioWrapper from './components/RadioWrapper';
+  import CheckboxWrapper from './components/CheckboxWrapper.vue';
+  import AppFinal from './components/Final.vue';
 
   export default {
     data() {
@@ -87,11 +60,13 @@
         results: [
           {
             radioNum: '',
-            checkboxNum: []
           }
         ],
         picked: '',
-        show: true        
+        checkboxNum: [],
+        firstShow: false,
+        secondShow: false,
+        isCheckboxed: false        
       }
     },
     methods: {
@@ -99,22 +74,42 @@
         this.picked = data.isPicked;
         this.results[0].radioNum = data.num;
       },
-      setCheckedRes($event, index) {
-        this.results[0].checkboxNum[index] = $event.target.checked;
-        console.log($event.target.checked);
-        console.log(this.results[0].checkboxNum);
+      setCheckedRes(data) {
+        this.checkboxNum[data.index] = data.isCheck;
+        this.isSomeTrue();
+        // console.log(this.checkboxNum);
       }
     },
     beforeMount() {
       for(let i = 0; i < this.info[1].answers.length; i++) {
-        // this.results[0].checkboxNum.push(false);
-        this.results[0].checkboxNum[i] = false;
+        this.checkboxNum[i] = false;
         console.log('bm');
       }
     },
+    computed: {
+      isFirstShow() {
+        return this.firstShow = true;
+        // console.log(this.firstShow);
+      },
+      isSecondShow() {
+        return this.secondShow = true;
+        // console.log(this.secondShow);
+      },
+      isSomeTrue() {
+        console.log('bam!');
+        if (this.checkboxNum.some(item => item == true )) {
+          return this.isCheckboxed = true;
+          console.log(this.isCheckboxed);
+        } else {
+          return this.isCheckboxed = false;
+          console.log(this.isCheckboxed);
+        }
+      }
+    },
     components: {
-      AppInput,
-      CheckboxInput
+      RadioWrapper,
+      CheckboxWrapper,
+      AppFinal
     }
   }
 </script>

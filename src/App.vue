@@ -75,7 +75,8 @@
         this.results[0].radioNum = data.num;
       },
       setCheckedRes(data) {
-        this.checkboxNum[data.index] = data.isCheck;
+        // this.checkboxNum[data.index] = data.isCheck;
+        this.$set(this.checkboxNum, data.index, data.isCheck);
         this.isSomeTrue();
         // console.log(this.checkboxNum);
       }

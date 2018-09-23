@@ -1,29 +1,29 @@
 <template>
   <div class="wrapper">
+    <transition name="fade" mode="out-in">  
+      <radio-wrapper v-if="!firstShow"
+                    :title="info[0].title"
+                    :obj="info[0]"
+                    :picked="picked"
+                    @pickedpickedradio="changePicked(index, $event)"
+                    @showshow="isFirstShow()"
+      ></radio-wrapper>
+    
+      <checkbox-wrapper v-if="firstShow && !secondShow"
+                        :title="info[1].title"
+                        :obj="info[1]"
+                        :isCheckbox="isCheckboxed"
+                        @pickedpickedbox="setCheckedRes($event)"
+                        @showshow="isSecondShow()"
+      ></checkbox-wrapper> 
 
-    <radio-wrapper v-if="!firstShow"
-                   :title="info[0].title"
-                   :obj="info[0]"
-                   :picked="picked"
-                   @pickedpickedradio="changePicked(index, $event)"
-                   @showshow="isFirstShow()"
-    ></radio-wrapper>
-
-    <checkbox-wrapper v-if="firstShow && !secondShow"
-                      :title="info[1].title"
-                      :obj="info[1]"
-                      :isCheckbox="isCheckboxed"
-                      @pickedpickedbox="setCheckedRes($event)"
-                      @showshow="isSecondShow()"
-    ></checkbox-wrapper>    
-
-    <app-final v-if="firstShow && secondShow"
-               :firstTitle="info[0].title"
-               :secondTitle="info[1].title"
-               :radioResult="results[0].radioNum"
-               :checkboxArr="checkboxNum"
-    ></app-final>
-
+      <app-final v-if="firstShow && secondShow"
+                :firstTitle="info[0].title"
+                :secondTitle="info[1].title"
+                :radioResult="results[0].radioNum"
+                :checkboxArr="checkboxNum"
+      ></app-final>
+    </transition>
   </div>
 </template>
 
@@ -121,4 +121,24 @@
     margin-left: auto;
     margin-right: auto;  
   }
+
+  .fade-enter {
+    opacity: 0;
+  }
+  .fade-enter-active {
+    transition: opacity .5s;
+  }
+  .fade-enter-to {
+
+  }
+  .fade-leave {
+
+  }
+  .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-leave-to {
+    opacity: 0;
+  }
+
 </style>

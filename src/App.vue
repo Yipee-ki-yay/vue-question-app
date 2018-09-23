@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <transition name="fade" mode="out-in">  
+    <transition name="fade" mode="out-in" appear>  
       <radio-wrapper v-if="!firstShow"
                     :title="info[0].title"
                     :obj="info[0]"
